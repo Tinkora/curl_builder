@@ -1,0 +1,51 @@
+name: Quality
+
+'on':
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  rust:
+    uses: Tinkora/.github/.github/workflows/reusable-rust-quality.yml@d76b644c462c58ef40d2dc026271eb3584bfa5f0 # Tinkora organization baseline
+    with:
+      working-directory: .
+      toolchain: 1.95.0
+      locked: true
+      msrv: 1.95.0
+
+  syntax:
+    name: Required generated syntax tools
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install Rust toolchain
+        run: rustup toolchain install 1.95.0 --profile minimal --no-self-update
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+
+      - name: Require every syntax validator
+        env:
+          CURL_BUILDER_REQUIRE_SYNTAX_TOOLS: '1'
+          RUSTUP_TOOLCHAIN: 1.95.0
+        run: cargo test -p curl_builder_core --test generated_syntax --locked
+
+  wasm:
+    uses: Tinkora/.github/.github/workflows/reusable-wasm-quality.yml@d76b644c462c58ef40d2dc026271eb3584bfa5f0 # Tinkora organization baseline
+    with:
+      working-directory: crates/curl_builder_web
+      toolchain: 1.95.0
+      locked: true
+      playwright-smoke: true
+      node-version: '24'

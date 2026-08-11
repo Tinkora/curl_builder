@@ -1,0 +1,42 @@
+name: Feature request
+description: Propose a small outcome backed by a real request-conversion workflow.
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: workflow
+    attributes:
+      label: User workflow
+      description: Describe who has the problem, the real task, and how often it occurs.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence of need
+      description: Provide sanitized examples, user feedback, or reproducible friction.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Existing alternatives
+      description: Explain current workarounds and established tools considered.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Smallest useful outcome
+      description: Describe a measurable user-visible result, not an implementation plan.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues and discussions for overlapping requests.
+          required: true
+        - label: I did not include sensitive or proprietary data.
+          required: true

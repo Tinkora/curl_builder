@@ -1,0 +1,8 @@
+# Default ownership
+* @tinkeragora
+
+# Security and release boundaries
+/.github/ @tinkeragora
+/crates/curl_builder_core/ @tinkeragora
+/crates/curl_builder_web/src/ @tinkeragora
+/SECURITY.md @tinkeragora

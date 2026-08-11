@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Build one HTTP request and convert it to cURL, JavaScript, Python, Go, Rust, or Node.js entirely in your browser.">
+  <meta name="theme-color" content="#161814">
+  <title>Curl Builder | Tinkora</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./assets/styles.css">
+</head>
+<body>
+  <svg class="icon-sprite" aria-hidden="true">
+    <symbol id="icon-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2m3 0-1 15H6L5 6m5 4v7m4-7v7"/></symbol>
+    <symbol id="icon-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5.5 9.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3M7.5 16h9"/></symbol>
+    <symbol id="icon-import" viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></symbol>
+    <symbol id="icon-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3"/></symbol>
+    <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="icon-x" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="icon-github" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3.3-.4 6.8-1.6 6.8-7A5.4 5.4 0 0 0 19.4 4 5 5 0 0 0 19.3.5S18.2.1 15 1.8a13.4 13.4 0 0 0-6 0C5.8.1 4.7.5 4.7.5A5 5 0 0 0 4.6 4a5.4 5.4 0 0 0-1.4 3.7c0 5.4 3.5 6.6 6.8 7A4.8 4.8 0 0 0 9 18v4M9 19c-3 .9-3-1.5-4-2"/></symbol>
+  </svg>
+
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-block">
+        <a class="brand" href="./" aria-label="Curl Builder home"><span class="brand-mark">C</span><span>Curl Builder</span></a>
+        <span class="privacy-note" data-i18n="privacy">Local only · no requests sent</span>
+      </div>
+      <nav class="toolbar" aria-label="Workspace actions" data-i18n-aria="actions">
+        <button class="tool-button" id="clear-button" type="button">
+          <svg class="icon"><use href="#icon-trash"/></svg><span class="button-label" data-i18n="clear">Clear</span>
+        </button>
+        <button class="tool-button" id="example-button" type="button">
+          <svg class="icon"><use href="#icon-flask"/></svg><span class="button-label" data-i18n="example">Example</span>
+        </button>
+        <button class="tool-button" id="import-button" type="button">
+          <svg class="icon"><use href="#icon-import"/></svg><span class="button-label" data-i18n="importCurl">Import cURL</span>
+        </button>
+        <button class="tool-button primary" id="copy-button" type="button">
+          <svg class="icon"><use href="#icon-copy"/></svg><span class="button-label" data-i18n="copy">Copy</span>
+        </button>
+        <button class="locale-button" id="locale-button" type="button" aria-label="Switch language">中文</button>
+        <a class="icon-link" href="https://github.com/Tinkora/curl_builder" aria-label="GitHub repository" title="GitHub">
+          <svg class="icon"><use href="#icon-github"/></svg>
+        </a>
+      </nav>
+    </header>
+
+    <main class="workspace" id="workspace">
+      <section class="request-panel" aria-labelledby="request-heading">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow" data-i18n="request">Request</p>
+            <h1 id="request-heading" data-i18n="composeRequest">Compose HTTP request</h1>
+          </div>
+          <span class="alpha-badge">Alpha</span>
+        </div>
+
+        <form id="request-form" novalidate>
+          <fieldset class="control-section">
+            <legend data-i18n="method">Method</legend>
+            <div class="segmented-control method-control" id="method-control"></div>
+          </fieldset>
+
+          <div class="control-section">
+            <label for="url-input" data-i18n="requestUrl">Request URL</label>
+            <input class="text-input mono" id="url-input" name="url" type="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://api.example.com/v1/items" data-i18n-placeholder="urlPlaceholder" aria-describedby="url-status" required>
+            <p class="field-status" id="url-status" role="status" aria-live="polite"></p>
+          </div>
+
+          <div class="control-section">
+            <div class="section-row">
+              <label id="headers-label" data-i18n="headers">Headers</label>
+              <span class="counter" id="header-counter">0 / 100</span>
+            </div>
+            <div class="header-columns" aria-hidden="true"><span data-i18n="headerName">Name</span><span data-i18n="headerValue">Value</span><span></span></div>
+            <div class="header-list" id="header-list" aria-labelledby="headers-label"></div>
+            <button class="add-button" id="add-header-button" type="button"><svg class="icon"><use href="#icon-plus"/></svg><span data-i18n="addHeader">Add header</span></button>
+          </div>
+
+          <fieldset class="control-section body-section">
+            <legend data-i18n="body">Body</legend>
+            <div class="segmented-control body-control" id="body-control"></div>
+            <label class="sr-only" for="body-input" data-i18n="bodyContent">Body content</label>
+            <textarea class="body-input mono" id="body-input" name="body" spellcheck="false" data-i18n-placeholder="bodyPlaceholder" placeholder="Enter request body" disabled></textarea>
+            <p class="body-hint" id="body-hint"></p>
+          </fieldset>
+        </form>
+      </section>
+
+      <section class="output-panel" aria-labelledby="output-heading">
+        <div class="output-header">
+          <div>
+            <p class="eyebrow" data-i18n="output">Output</p>
+            <h2 id="output-heading" data-i18n="generatedCode">Generated code</h2>
+            <p class="copy-warning" data-i18n="copyWarning">Generated code can include credentials. Review before copying.</p>
+          </div>
+          <p class="output-status" id="output-status" role="status" aria-live="polite">Waiting for a URL</p>
+        </div>
+        <div class="language-tabs" id="language-tabs" role="tablist" aria-label="Output language" data-i18n-aria="outputLanguage"></div>
+        <div class="code-viewport" id="code-viewport">
+          <div class="empty-state" id="empty-state">
+            <span class="empty-mark" aria-hidden="true">&gt;_</span>
+            <p data-i18n="emptyOutput">Add a valid HTTP(S) URL to generate snippets.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="statusbar">
+      <span data-i18n="boundary">One request · HTTP(S) · browser-local</span>
+      <span><a href="https://github.com/Tinkora/curl_builder/blob/main/README.md" data-i18n="docs">Docs</a> · MIT · Tinkora</span>
+    </footer>
+  </div>
+
+  <dialog class="import-dialog" id="import-dialog" aria-labelledby="import-title">
+    <div class="dialog-header">
+      <div>
+        <p class="eyebrow">cURL</p>
+        <h2 id="import-title" data-i18n="importTitle">Import one cURL request</h2>
+      </div>
+      <button class="icon-button" id="dialog-close-button" type="button" aria-label="Close dialog" data-i18n-aria="closeDialog" title="Close">
+        <svg class="icon"><use href="#icon-x"/></svg>
+      </button>
+    </div>
+    <label for="import-input" data-i18n="curlCommand">cURL command</label>
+    <textarea class="import-input mono" id="import-input" spellcheck="false" placeholder="curl -X POST 'https://api.example.com/items' ..."></textarea>
+    <p class="dialog-note" data-i18n="importBoundary">Supported options are parsed locally. Files and shell expansion are rejected.</p>
+    <p class="dialog-error" id="import-error" role="alert"></p>
+    <div class="dialog-actions">
+      <button class="tool-button" id="dialog-cancel-button" type="button" data-i18n="cancel">Cancel</button>
+      <button class="tool-button primary" id="dialog-import-button" type="button" data-i18n="import">Import</button>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="./assets/app.js"></script>
+</body>
+</html>
