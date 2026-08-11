@@ -1,0 +1,17 @@
+{
+  "name": "curl-builder-web-tests",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "prepare:wasm-smoke": "node scripts/prepare-wasm-smoke.mjs",
+    "test:wasm-smoke": "npm run prepare:wasm-smoke && playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1",
+    "http-server": "14.1.1"
+  }
+}

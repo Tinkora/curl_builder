@@ -1,0 +1,50 @@
+name: Bug report
+description: Report reproducible behavior that differs from the documented contract.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Do not include secrets or vulnerability details. Use the private security flow when appropriate.
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: 0.1.0-alpha.1 or commit SHA
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Provide a sanitized request and the smallest complete sequence.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include OS, browser, architecture, and relevant tool versions.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I reproduced this against the latest available code and searched existing issues.
+          required: true
+        - label: I removed credentials, personal data, and proprietary payloads.
+          required: true

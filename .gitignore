@@ -1,0 +1,9 @@
+/target/
+/pkg/
+/.playwright-cli/
+/dist/
+/crates/curl_builder_web/static/
+/crates/curl_builder_web/test-results/
+/crates/curl_builder_web/node_modules/
+/crates/curl_builder_web/pkg/
+.DS_Store

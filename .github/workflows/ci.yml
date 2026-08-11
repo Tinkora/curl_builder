@@ -1,0 +1,24 @@
+name: Continuous integration
+
+'on':
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/quality.yml
+
+  documentation:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/docs-quality.yml
+
+  supply-chain:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/supply-chain.yml
