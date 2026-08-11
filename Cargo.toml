@@ -10,7 +10,7 @@ repository = "https://github.com/Tinkora/curl_builder"
 rust-version = "1.95"
 
 [workspace.dependencies]
-base64 = "0.22"
+base64 = "0.23"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 thiserror = "2.0"
