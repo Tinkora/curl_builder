@@ -2,6 +2,8 @@
 
 [English](README.md)
 
+[![在 Ko-fi 上支持 Tinkora](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/tinkora)
+
 [打开浏览器工具](https://tinkora.github.io/curl_builder/)
 
 Curl Builder 是一个在浏览器本地运行的 HTTP 请求转换器。你可以构建或导入单个请求，
